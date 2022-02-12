@@ -1,0 +1,114 @@
+#include <iostream>
+
+using namespace std;
+
+class First
+{
+private:
+    int field1; // Подсчитывает кол-во обращений к классу First
+    float field2, field3;
+    void setField1(int anInt) { field1 = anInt; }
+public:
+    // Конструкторы и деструкторы
+    First()
+    {
+        cout << "\nln void constructor for First";
+        setField1(0);
+        field2 = 0.0;
+        field3 = 0.0;
+    }
+    First(float aField2, float aField3 = 0.0)
+    {
+        cout << "\nln 2-parameter constructor for First";
+        setField1(0);
+        field2 = aField2;
+        field3 = aField3;
+    }
+    ~First(void) { cout << "\nln destructor for First"; }
+    // Методы доступа
+    int getField1(void) { return ++field1; }
+    float getField2(void) { field1++; return field2; }
+    float getField3(void) { field1++; return field3; }
+    void setField2(float aFloat) { field1++; field2 = aFloat; }
+    void setField3(float aFloat) { field1++; field3 = aFloat; }
+    void resetField1(void) { setField1(0); }
+    // Операции над полями
+    int comparefields(void) { field1++; return field2 == field3; }
+    // Методы печати
+    void print()
+    {
+        field1++; //Печать это тоже доступ
+        cout << "\n Number of accesses to this object = " << field1;
+        printf("\n Value of field2 = %.2f", field2);
+        printf("\n Value of fields = %.2f", field3);
+    }
+};
+
+/*Что если метод setField1 поместить в открытую часть,
+чтобы иметь возможность модификации поля field1. Что в этом плохого?
+
+
+Можно по невнимательности модифицировать это поле*/
+
+/*Что если в конструктор с двумя параметрами добавить значение
+по умолчанию для поля field2
+
+Тогда конструктор по умолчанию будет аналогичен, т.е. произойдет дублирование кода, что плохо*/
+
+int main() {
+    First a;
+    First b(10.25), c(12.60, -5.60);
+    cout << "\n Test program results for class First" << "\n Print details of first1";
+    a.print();
+    cout << "\n Print details of first2";
+    b.print();
+    cout << "\n Print details of first3";
+    c.print();
+    cout << "\nModify field3 of first2 and verify";
+    b.setField3(-8.00);
+    b.print();
+    cout << "\n Reset and print first3";
+    c.resetField1();
+    c.print();
+    cout << "\n Compare field2 and field3 of first1";
+    a.comparefields();
+    return 0;
+}
+/*Написать программу тестирования и получить следующий результат
+
+ln void constructor for First
+ln 2-parameter constructor for First
+ln 2-parameter constructor for First
+Test program results for class First
+Print details of first1
+Number of access to this object = 1
+Value of fieid2 = 0.00
+Value of field3 = 0.00
+Print details of first2
+Number of access to this object = 1
+Value of field2 = 10.25
+Value of field3 = 0.00
+Print details of first3
+Number of access to this object = 1
+Value of field2 = 12.60
+Value of field3 = -5.60
+Modify field3 of first2 and verify
+Number of access to this object = 4
+Value of field2 = 15.80
+Value of field3 = -8.00
+Reset and print first3
+Number of access to this object = 1
+Value of field2 = 12.60
+Value of fields = -5.60
+Compare field2 and field3 of first1
+field2=fields
+ln destructor for First
+ln destructor for First
+In destructor for First
+*/
+
+/*Видоизменить класс добавить конструктор,
+ который будет присваивать второй параметр по умолчанию или явно,
+ а третий будем указывать всегда. Протестировать изменения. */
+
+
