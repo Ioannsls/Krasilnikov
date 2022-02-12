@@ -1,0 +1,68 @@
+#include <iostream>
+#include <exception>
+using namespace std;
+
+#define SIZE 100
+
+class Stack
+    // Добавить возможность создавать стек заданной параметром конструктора глубины.
+    // Добавить в класс контроль переполнения, cоздавая исключительную ситуацию throw при переполнении.
+    // В программе перехватить созданную исключительную ситуацию try{} catch(type value){}
+
+{
+    int* stack;
+    int tos;
+    const int max_pos;
+public:
+    Stack(int count = SIZE) : max_pos(count) {
+        stack = new int[count];
+        tos = 0;
+    };
+
+    ~Stack() {
+        delete stack;
+    };
+
+    void push(int i) {
+        if (tos == max_pos)
+        {
+            throw exception("Stack overflow\n");
+            return;
+        }
+        stack[tos] = i;
+        tos++;
+    };
+
+    int pop() {
+        if (tos == 0)
+        {
+            throw exception("Stack underflow\n" + max_pos);
+            return 0;
+        }
+        tos--;
+        return stack[tos];
+    };
+};
+int main()
+{
+    try
+    {
+        Stack a(2), b;
+        a.push(1);
+        b.push(2);
+        //a.push(2);
+        a.push(3);
+        b.push(4);
+        cout << a.pop() << " ";
+        cout << a.pop() << " ";
+        cout << b.pop() << " ";
+        cout << b.pop() << "\n";
+    }
+    catch (const std::exception& e)
+    {
+        cout << e.what();
+    }
+    
+
+    return 0;
+}
